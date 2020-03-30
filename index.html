@@ -6,7 +6,8 @@
     <title>Food Experation App</title>
     <!-- Vuetify Needed CSS -->
     <link href="https://fonts.googleapis.com/css?family=Roboto:100,300,400,500,700,900" rel="stylesheet">
-    <link href="Assets/CSS/materialdesignicons.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/@mdi/font@4.x/css/materialdesignicons.min.css" rel="stylesheet">
+    <!-- <link href="Assets/CSS/materialdesignicons.min.css" rel="stylesheet"> -->
     <link href="Assets/CSS/vuetify.min.css" rel="stylesheet">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, minimal-ui">
     <!-- Custom CSS -->
@@ -32,23 +33,60 @@
                         </v-col>
                     </v-row>
 
+                    <!-- Add new Items Form -->
+                    <v-row justify="center" class="mt-5">
+                        <v-card elevation=8 class="pa-8" shaped>
+                            <v-form>
+                                <v-col cols=12 class="text-center display-2">
+                                    Add New Item Into Fridge
+                                </v-col>
+                                <!-- Name -->
+                                <v-col cols=10 class="mx-auto">
+                                    <v-text-field v-model="newItem.name" label="Name" placeholder="Enter Name"></v-text-field>
+                                </v-col>
+        
+                                <!-- Expiration Date -->
+                                <v-col cols=10 class="mx-auto">
+                                    <v-text-field v-model="newItem.expDate" label="Expiration Date" placeholder="MM-DD-YYYY"></v-text-field>
+                                </v-col>
+    
+                                <!-- Submit Button -->
+                                <v-col cols=10 class="mx-auto text-center">
+                                    <v-btn color="green" dark rounded large block>
+                                        Submit
+                                    </v-btn>
+                                </v-col>
+                            </v-form>
+                        </v-card>
+                    </v-row>
+
                     <!-- Fridge Row -->
-                    <v-row class="mt-5">
+                    <v-row class="mt-5" justify="center">
                         <v-col cols=12 class="display-2 text-center">
                             Fridge Contents
                         </v-col>
                         <v-col cols=10>
                             <v-card elevation=8>
-                                <ul>
-                                    <li v-for="(item, i) in fridge" :key="i">
-                                        {{item.name}}
-                                        <ul>
-                                            <li v-if="checkExp(item.expDate) == 0">Expiration Date: <span class="font-weight-bold red--text">{{item.expDate}}</span></li>
-                                            <li v-if="checkExp(item.expDate) == 1">Expiration Date: <span class="font-weight-bold yellow--text">{{item.expDate}}</span></li>
-                                            <li v-if="checkExp(item.expDate) == 2">Expiration Date: <span class="font-weight-bold">{{item.expDate}}</span></li>
-                                        </ul> 
-                                    </li>
-                                </ul>
+                                <v-expansion-panels>
+                                    <v-expansion-panel v-for="(item, i) in fridge" :key="i">
+                                        <v-expansion-panel-header>{{ item.name }}</v-expansion-panel-header>
+                                        
+                                        <!-- If item is expired -->
+                                        <v-expansion-panel-content v-if="checkExp(item.expDate) == 0">
+                                            Expiration Date: <span class="font-weight-bold red--text">{{item.expDate}}</span>
+                                        </v-expansion-panel-content>
+
+                                        <!-- If item is expiring -->
+                                        <v-expansion-panel-content v-if="checkExp(item.expDate) == 1">
+                                            Expiration Date: <span class="font-weight-bold yellow--text">{{item.expDate}}</span>
+                                        </v-expansion-panel-content>
+
+                                        <!-- If item is not expired -->
+                                        <v-expansion-panel-content v-if="checkExp(item.expDate) == 2">
+                                            Expiration Date: <span class="font-weight-bold">{{item.expDate}}</span>
+                                        </v-expansion-panel-content>
+                                    </v-expansion-panel>
+                                </v-expansion-panels>
                             </v-card>
                         </v-col>
                     </v-row>

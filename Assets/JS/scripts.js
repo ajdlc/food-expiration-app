@@ -37,7 +37,11 @@ let data = {
             name: "Salsa",
             expDate: "03-30-2020"
         }
-    ]
+    ],
+    newItem: {
+        name: "",
+        expDate: ""
+    }
 }
 //#endregion
 
