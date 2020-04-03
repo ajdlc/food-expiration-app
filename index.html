@@ -83,10 +83,9 @@
                                                     {{item.name}}
                                                 </v-col>
                                                 <v-col class="pt-0 pl-0 pb-0 pr-4 text-right" align-self="center">
-                                                    <v-btn icon large color="red" @mouseover="trashcanHover(item, 1)" @mouseout="trashcanHover(item, 0)" @click.stop="test">
+                                                    <v-btn icon large color="red" @click.stop="showDelete(i)">
                                                         <!-- When the user hovers over the trashcan, show the open trashcan -->
                                                         <v-icon>{{ item.icons.trashcan[item.icons.trashcan.state] }}</v-icon>
-                                                        
                                                     </v-btn>
                                                 </v-col>
                                             </v-row> 
@@ -112,6 +111,31 @@
                         </v-col>
                     </v-row>
                 </v-container>
+
+
+                <!-- Dialogs -->
+                <v-dialog v-model="showDeleteDialog" color="white" width="375">
+                    <v-card>
+                        <!-- Title -->
+                        <v-card-title class="red white--text">
+                            <v-spacer></v-spacer>
+                            Are You Sure You Want to Delete?
+                            <v-spacer></v-spacer>
+                        </v-card-title>
+
+                        <!-- Actions -->
+                        <v-card-actions>
+                            <v-btn icon color="green" aria-label="confirm delete button" @click="deleteItem">
+                                <v-icon large>mdi-check</v-icon>
+                            </v-btn>
+                            <v-spacer></v-spacer>
+                            <v-btn icon color="red" aria-label="cancel delete button" @click="cancelDelete">
+                                <v-icon large>mdi-cancel</v-icon>
+                            </v-btn>
+                        </v-card-actions>
+
+                    </v-card>
+                </v-dialog>
             </v-content>
             <!-- Footer -->
         </v-app>

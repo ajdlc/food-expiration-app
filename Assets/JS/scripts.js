@@ -49,7 +49,9 @@ let data = {
             hover: "mdi-delete-empty",
             state: "default" 
         }
-    }
+    },
+    showDeleteDialog: false,
+    itemIndexToDelete: -1
 }
 //#endregion
 
@@ -173,18 +175,30 @@ let vm = new Vue({
             })
             //#endregion
         },
-        trashcanHover(item, val) {
-            //if val === 1 show lid open trashcan
-            if (val === 1) {
-                item.icons.trashcan.state = "hover";
-            }
-            //if val == 0 show default trashcan
-            else {
-                item.icons.trashcan.state = "default";
-            }
+        showDelete(i) {
+            this.itemIndexToDelete = i;
+            this.showDeleteDialog = true;
         },
-        test(e) {
-            console.log(e);
+        deleteItem() {
+            this.fridge.splice(this.itemIndexToDelete, 1);
+            // Clear the index
+            this.cancelDelete();
+        },
+        cancelDelete() {
+            // Clear the index
+            this.itemIndexToDelete = -1;
+            // Hide the dialog
+            this.showDeleteDialog = false;
+        },
+        editItem(item) {
+            // Super Shorthand version
+            // this.fridge.find(fItem => fItem.name === item.name && fItem.expDate === item.expDate);
+            // Equivalent to
+            // this.fridge.find((fItem) => {
+            //     if (fItem.name === item.name && fItem.expDate === item.expDate) {
+            //         return fItem;
+            //     }
+            // })
         }
     }
 });
