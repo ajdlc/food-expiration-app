@@ -8,6 +8,7 @@ let data = {
     title: "Food Expiration Application",
     message: "Hello Friday.",
     weather: "Sunny and Cold!",
+    alerts: [],
     fridge: [
         {
             name: "Applesauce",
@@ -41,6 +42,13 @@ let data = {
     newItem: {
         name: "",
         expDate: ""
+    },
+    icons: {
+        trashcan: {
+            default: "mdi-delete",
+            hover: "mdi-delete-empty",
+            state: "default" 
+        }
     }
 }
 //#endregion
@@ -55,6 +63,47 @@ let vm = new Vue({
     el: "#app",
     vuetify: new Vuetify(),
     data,
+    computed: {
+        sortedFridge: function() {
+            // Sort the fridge based on expiration date
+            const sFridge = this.fridge.sort((a, b) => {
+                let aDate = a.expDate.split("-");
+                let bDate = b.expDate.split("-");
+
+                // Compare Year
+                if (parseInt(aDate[2]) < parseInt(bDate[2])) {
+                    return -1;
+                } else if(parseInt(aDate[2]) > parseInt(bDate[2])) {
+                    return 1;
+                } else if(parseInt(aDate[2]) == parseInt(bDate[2])) {
+                    // Years are the same, check months
+                    if (parseInt(aDate[0]) < parseInt(bDate[0])) {
+                        return -1;
+                    } else if(parseInt(aDate[0]) > parseInt(bDate[0])) {
+                        return 1;
+                    } else if(parseInt(aDate[0]) == parseInt(bDate[0])) {
+                        // Months are the same, check days
+                        if (parseInt(aDate[1]) < parseInt(bDate[1])) {
+                            return -1;
+                        } else if(parseInt(aDate[1]) > parseInt(bDate[1])) {
+                            return 1;
+                        } else if(parseInt(aDate[1]) == parseInt(bDate[1])) {
+                            // The dates are exactly the same
+                            return 0;
+                        }
+                    }
+                }
+            });
+
+            // For Icon assignment
+            sFridge.forEach((item) => {
+                item.icons = {};
+                item.icons.trashcan = Object.assign({}, this.icons.trashcan);
+            })
+            
+            return sFridge;
+        }
+    },
     methods: {
         checkExp(expDate) {
             // Constants for return message representation
@@ -82,6 +131,60 @@ let vm = new Vue({
                 return expired;
             }
 
+        },
+        addFoodItem() {
+            // Reset the alert array - to clear previous alerts
+            this.alerts = [];
+            // Check fields for empty strings
+            //#region 
+            if (this.newItem.name === "") {
+                // Return alert with message "Please enter name"
+                this.alerts.push({
+                    message: "Please enter a name.",
+                    type: "error"
+                })
+            }
+            if (this.newItem.expDate === "") {
+                // Return alert with message "Please enter date"
+                this.alerts.push({
+                    message: "Please enter a date.",
+                    type: "error"
+                })
+            }
+            //#endregion
+
+            // Check to see if there are alerts to stop code execution
+            if (this.alerts.length > 0) {
+                return;
+            }
+            // Add new food item to fridge
+            //#region 
+            this.fridge.push(this.newItem);
+
+            // Clear out newItem properties and show success alert
+            this.newItem = {
+                message: "",
+                expDate: ""
+            };
+
+            this.alerts.push({
+                message: "Item Added!",
+                type: "success"
+            })
+            //#endregion
+        },
+        trashcanHover(item, val) {
+            //if val === 1 show lid open trashcan
+            if (val === 1) {
+                item.icons.trashcan.state = "hover";
+            }
+            //if val == 0 show default trashcan
+            else {
+                item.icons.trashcan.state = "default";
+            }
+        },
+        test(e) {
+            console.log(e);
         }
     }
 });
