@@ -6,6 +6,7 @@
 //#region 
 let data = {
     title: "Food Expiration Application",
+    sideDrawer: false,
     message: "Hello Friday.",
     weather: "Sunny and Cold!",
     alerts: [],

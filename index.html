@@ -20,18 +20,44 @@
         <!-- Vuetify App -->
         <v-app>
             <!-- Navigation/App Bar -->
+            <v-app-bar app color="teal darken-1" dark>
+                <!-- Side Drawer Icon -->
+                <v-app-bar-nav-icon @click="sideDrawer = !sideDrawer"></v-app-bar-nav-icon>
+
+                <!-- Title -->
+                <v-toolbar-title>{{ title }}</v-toolbar-title>
+
+                <v-spacer></v-spacer>
+
+                <!-- Buttons -->
+                <v-tooltip bottom>
+                    <template v-slot:activator="{ on }">
+                        <v-btn icon v-on="on" href="https://github.com/ajdlc/food-expiration-app" target="_blank" class="mr-3">
+                            <v-img src="./Assets/icons/gh.png" contain height="30px" width="30px"></v-img>
+                        </v-btn>
+                    </template>
+                    <span>Github</span>
+                </v-tooltip>
+
+            </v-app-bar>
+
             <!-- Side Drawer -->
+            <v-navigation-drawer app v-model="sideDrawer" temporary>
+                <v-list>
+                    <v-list-item-group>
+                        <v-list-item>
+                            <v-list-item-content>
+                                <v-list-item-title>Home</v-list-item-title>
+                            </v-list-item-content>
+                        </v-list-item>
+                    </v-list-item-group>
+                </v-list>
+            </v-navigation-drawer>
 
             <!-- Content -->
             <v-content>
                 <v-container>
                     <!-- V-container = Bootstrap Container = wrapper div == equal padding around the entire page and allows for flexbox and CSS grids inside of it -->
-                    <v-row justify="center">
-                        <!-- v-row == a row that allows a max of 12 columns inside - is a div element -->
-                        <v-col cols=12 class="display-4 text-center">
-                            {{ title }}
-                        </v-col>
-                    </v-row>
 
                     <!-- Add new Items Form -->
                     <v-row justify="center" class="mt-5">
@@ -137,7 +163,15 @@
                     </v-card>
                 </v-dialog>
             </v-content>
+
             <!-- Footer -->
+            <v-footer app>
+                <v-row>
+                    <v-col class="text-right">
+                        &copy; 2020 - <strong>De La Costa & Fortenberry</strong>
+                    </v-col>
+                </v-row>
+            </v-footer>
         </v-app>
     </div>
     <!-- #endregion -->
